@@ -97,53 +97,6 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-   switch (get_highest_layer(layer_state)) {
-      case 2:{
-        RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 255, 255, 255);
-        if (!rgb_matrix_get_flags()) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-         }
-      } break;
-      case 3:{
-        RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 255, 255, 255);
-        if (!rgb_matrix_get_flags()) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-         }
-      } break;
-
-      case 0:{
-       if (L_WIN) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 255, 255, 255);
-            if (!rgb_matrix_get_flags()) {
-               RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-            }
-            }else{
-                if (!rgb_matrix_get_flags()) {
-                   RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-                 }
-              }
-         } break;
-
-     case 1:{
-       if (L_MAC) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 255, 255, 255);
-            if (!rgb_matrix_get_flags()) {
-               RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-            }
-            }else{
-                if (!rgb_matrix_get_flags()) {
-                   RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-                 }
-              }
-         } break;
-
-      default:{
-         if (!rgb_matrix_get_flags()) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(WIN_MOD_INDEX, 0, 0, 0);
-            RGB_MATRIX_INDICATOR_SET_COLOR(MAC_MOD_INDEX, 0, 0, 0);
-         }
-      }
-    }
     return false;
 }
 
@@ -179,39 +132,6 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             }
          return false;
 #    endif
-     case TO(0):
-      if (record->event.pressed) {
-       L_WIN = 1;
-       set_single_persistent_default_layer(0); // Save default layer 0 to eeprom
-      } else {
-       L_WIN = 0;
-      }
-      return true; // continue all further processing of this key
-
-     case MO(2):
-      if (record->event.pressed) {
-       FN_WIN = 1;
-      } else {
-       FN_WIN = 0;
-      }
-      return true; // continue all further processing of this key
-
-     case TO(1):
-      if (record->event.pressed) {
-       L_MAC = 1;
-       set_single_persistent_default_layer(1);  //Save default layer 1 to eeprom
-      } else {
-       L_MAC = 0;
-      }
-      return true; // continue all further processing of this key
-
-     case MO(3):
-      if (record->event.pressed) {
-       FN_MAC = 1;
-      } else {
-       FN_MAC = 0;
-      }
-      return true; // continue all further processing of this key
     default:
       return true;
     }
