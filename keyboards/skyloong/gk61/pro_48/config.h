@@ -5,8 +5,8 @@
 
 #define RGB_MATRIX_LED_COUNT 64
 #define CAPS_LOCK_INDEX 28
-#define WIN_MOD_INDEX 16
-#define MAC_MOD_INDEX 17
+#define LGUI_INDEX 54
+#define ESCAPE_INDEX 0
 #define SDB A4
 
 #define RGB_MATRIX_SLEEP

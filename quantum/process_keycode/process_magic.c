@@ -74,7 +74,7 @@ bool process_magic(uint16_t keycode, keyrecord_t *record) {
                     keymap_config.no_gui = true;
                     break;
                 case QK_MAGIC_SWAP_GRAVE_ESC:
-                    keymap_config.swap_grave_esc = true;
+                    keymap_config.swap_grave_esc = !keymap_config.swap_grave_esc;
                     break;
                 case QK_MAGIC_SWAP_BACKSLASH_BACKSPACE:
                     keymap_config.swap_backslash_backspace = true;

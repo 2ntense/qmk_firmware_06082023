@@ -5,6 +5,7 @@ _Bool FN_WIN = 0;
 _Bool FN_MAC = 0;
 _Bool L_WIN = 0;
 _Bool L_MAC = 0;
+_Bool FN_MO3 = 0;
 
 #if defined(RGB_MATRIX_ENABLE)  /*&& defined(CAPS_LOCK_INDEX)*/
 const is31_led PROGMEM g_is31_leds[RGB_MATRIX_LED_COUNT] = {
@@ -97,6 +98,30 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
         }
     }
 
+    switch (get_highest_layer(layer_state)) {
+        case 3:
+            if (FN_MO3) {
+                if (keycode_config(KC_LEFT_GUI) == KC_NO) {
+                    RGB_MATRIX_INDICATOR_SET_COLOR(LGUI_INDEX, 255, 255, 255);
+                }
+                else if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
+                    RGB_MATRIX_INDICATOR_SET_COLOR(LGUI_INDEX, 0, 0, 0);
+                }
+                if (keycode_config(KC_ESCAPE) == KC_GRAVE) {
+                    RGB_MATRIX_INDICATOR_SET_COLOR(ESCAPE_INDEX, 255, 255, 255);
+                }
+                else if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
+                    RGB_MATRIX_INDICATOR_SET_COLOR(ESCAPE_INDEX, 0, 0, 0);
+                }
+            }
+            break;
+        default:
+            if (!rgb_matrix_get_flags()) {
+                RGB_MATRIX_INDICATOR_SET_COLOR(LGUI_INDEX, 0, 0, 0);
+                RGB_MATRIX_INDICATOR_SET_COLOR(ESCAPE_INDEX, 0, 0, 0);
+            }
+    }
+
     return false;
 }
 
@@ -117,7 +142,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
     switch (keycode) {
-#    ifdef RGB_MATRIX_ENABLE
+#ifdef RGB_MATRIX_ENABLE
         case RGB_TOG:
             if (record->event.pressed) {
                 switch (rgb_matrix_get_flags()) {
@@ -130,10 +155,18 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                     } break;
                 }
             }
-         return false;
-#    endif
-    default:
-      return true;
+            return false;
+#endif
+        case MO(3):
+            if (record->event.pressed) {
+                FN_MO3 = 1;
+            }
+            else {
+                FN_MO3 = 0;
+            }
+            return true;
+        default:
+            return true;
     }
 }
 
